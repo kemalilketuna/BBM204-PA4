@@ -17,7 +17,10 @@ public class Project implements Serializable {
     public int getProjectDuration() {
         int projectDuration = 0;
 
-        // TODO: YOUR CODE HERE
+        int startTimes[] = getEarliestSchedule();
+        for (int i = 0; i < tasks.size(); i++) {
+            projectDuration = Math.max(projectDuration, startTimes[i] + tasks.get(i).getDuration());
+        }
 
         return projectDuration;
     }
@@ -28,10 +31,39 @@ public class Project implements Serializable {
      * @return An integer array consisting of the earliest start days for each task.
      */
     public int[] getEarliestSchedule() {
+        int n = tasks.size();
+        int[] schedule = new int[n];
+        int[] visited = new int[n];
 
-        // TODO: YOUR CODE HERE
+        List<Integer> topSort = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (visited[i] == 0) {
+                Stack<Integer> stack = new Stack<>();
+                stack.push(i);
+                while (!stack.isEmpty()) {
+                    int u = stack.peek();
+                    visited[u] = 1;
+                    boolean hasUnvisited = false;
+                    for (int v : tasks.get(u).getDependencies()) {
+                        if (visited[v] == 0) {
+                            stack.push(v);
+                            hasUnvisited = true;
+                        }
+                    }
+                    if (!hasUnvisited) {
+                        topSort.add(stack.pop());
+                    }
+                }
+            }
+        }
 
-        return null;
+        for (int i = 0; i < n; i++) {
+            int u = topSort.get(i);
+            for (int v : tasks.get(u).getDependencies()) {
+                schedule[u] = Math.max(schedule[u], schedule[v] + tasks.get(v).getDuration());
+            }
+        }
+        return schedule;
     }
 
     public static void printlnDash(int limit, char symbol) {
@@ -57,7 +89,7 @@ public class Project implements Serializable {
             System.out.println(String.format("%-10d%-45s%-7d%-5d", i, t.getDescription(), schedule[i], schedule[i]+t.getDuration()));
         }
         printlnDash(limit, symbol);
-        System.out.println(String.format("Project will be completed in %d days.", tasks.get(schedule.length-1).getDuration() + schedule[schedule.length-1]));
+        System.out.println(String.format("Project will be completed in %d days.", getProjectDuration()));
         printlnDash(limit, symbol);
     }
 

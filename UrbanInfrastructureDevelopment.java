@@ -20,7 +20,9 @@ public class UrbanInfrastructureDevelopment implements Serializable {
      * @param projectList a list of Project objects
      */
     public void printSchedule(List<Project> projectList) {
-        // TODO: YOUR CODE HERE
+        for(Project project : projectList){
+            project.printSchedule(project.getEarliestSchedule());
+        }
     }
 
     /**
@@ -37,8 +39,6 @@ public class UrbanInfrastructureDevelopment implements Serializable {
             DocumentBuilder dBuilder = dFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
-            // Node root = doc.getElementsByTagName("Projects").item(0);
-            // NodeList nList = ((Element) root).getElementsByTagName("Project");
             NodeList projectNodeList = doc.getElementsByTagName("Project");
 
             for(int i = 0; i < projectNodeList.getLength(); i++){
