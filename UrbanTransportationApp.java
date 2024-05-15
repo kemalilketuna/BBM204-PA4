@@ -73,7 +73,7 @@ class UrbanTransportationApp implements Serializable {
             }
             visited[u] = true;
             for (int v = 0; v < n; v++) {
-                if (u == v) {
+                if (u == v || (path[u] == path[v] && Math.abs(u - v) > 1)) {
                     continue;
                 }
                 double time = 0;
@@ -83,7 +83,8 @@ class UrbanTransportationApp implements Serializable {
                 } else {
                     time = distance / network.averageTrainSpeed;
                 }
-                time = new BigDecimal(time).setScale(2, RoundingMode.HALF_UP).doubleValue();
+                // two decimal places
+                time = Math.round(time * 100.0) / 100.0;
                 if (weight[v] > weight[u] + time) {
                     weight[v] = weight[u] + time;
                     prev[v] = u;
