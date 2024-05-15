@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -16,10 +18,6 @@ class UrbanTransportationApp implements Serializable {
         double dst =  Math.sqrt(Math.pow(station1.coordinates.x - station2.coordinates.x, 2) + Math.pow(station1.coordinates.y - station2.coordinates.y, 2));
         return dst;        
     }
-
-    // private double kmhToMpm(double speed) {
-    //     return speed * 1000 / 60;
-    // }
 
     /**
      * Function calculate the fastest route from the user's desired starting point to 
@@ -83,10 +81,9 @@ class UrbanTransportationApp implements Serializable {
                 if (path[u] != path[v]) {
                     time = distance / network.averageWalkingSpeed;
                 } else {
-                    // time = distance / kmhToMpm(network.averageTrainSpeed);
                     time = distance / network.averageTrainSpeed;
                 }
-                time = Math.round(time * 100.0) / 100.0;
+                time = new BigDecimal(time).setScale(2, RoundingMode.HALF_UP).doubleValue();
                 if (weight[v] > weight[u] + time) {
                     weight[v] = weight[u] + time;
                     prev[v] = u;
@@ -131,10 +128,13 @@ class UrbanTransportationApp implements Serializable {
         System.out.println("----------");
         int i = 1;
         for (RouteDirection direction: directions) {
+            // direction.duration round to 2 decimal places
+            double duration = new BigDecimal(direction.duration).setScale(2, RoundingMode.HALF_UP).doubleValue();
+
             if (direction.trainRide) {
-                System.out.println(i + ". Get on the train from \"" + direction.startStationName + "\" to \"" + direction.endStationName + "\" for " + direction.duration + " minutes.");
+                System.out.println(i + ". Get on the train from \"" + direction.startStationName + "\" to \"" + direction.endStationName + "\" for " + String.format("%.2f", duration) + " minutes.");
             } else {
-                System.out.println(i + ". Walk from \"" + direction.startStationName + "\" to \"" + direction.endStationName + "\" for " + direction.duration + " minutes.");
+                System.out.println(i + ". Walk from \"" + direction.startStationName + "\" to \"" + direction.endStationName + "\" for " + String.format("%.2f", duration) + " minutes.");
             }
             i++;
         }
