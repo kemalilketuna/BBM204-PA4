@@ -17,9 +17,9 @@ class UrbanTransportationApp implements Serializable {
         return dst;        
     }
 
-    private double kmhToMpm(double speed) {
-        return speed * 1000 / 60;
-    }
+    // private double kmhToMpm(double speed) {
+    //     return speed * 1000 / 60;
+    // }
 
     /**
      * Function calculate the fastest route from the user's desired starting point to 
@@ -83,7 +83,8 @@ class UrbanTransportationApp implements Serializable {
                 if (path[u] != path[v]) {
                     time = distance / network.averageWalkingSpeed;
                 } else {
-                    time = distance / kmhToMpm(network.averageTrainSpeed);
+                    // time = distance / kmhToMpm(network.averageTrainSpeed);
+                    time = distance / network.averageTrainSpeed;
                 }
                 time = Math.round(time * 100.0) / 100.0;
                 if (weight[v] > weight[u] + time) {

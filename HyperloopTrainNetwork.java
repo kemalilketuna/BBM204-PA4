@@ -103,7 +103,7 @@ public class HyperloopTrainNetwork implements Serializable {
             row = reader.readLine();
             destinationPoint = new Station(getPointVar("destination_point", row), "Final Destination");
             row = reader.readLine();
-            averageTrainSpeed = getDoubleVar("average_train_speed", row);
+            averageTrainSpeed = getDoubleVar("average_train_speed", row) * 1000 / 60;
             String fileContent = "";
             while ((row = reader.readLine()) != null){
                 fileContent += row + "\n";
