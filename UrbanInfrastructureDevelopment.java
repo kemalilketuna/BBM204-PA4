@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.*;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,7 +24,7 @@ public class UrbanInfrastructureDevelopment implements Serializable {
     }
 
     /**
-     * TODO: Parse the input XML file and return a list of Project objects
+     * Reads an XML file and returns a list of Project objects.
      *
      * @param filename the input XML file
      * @return a list of Project objects

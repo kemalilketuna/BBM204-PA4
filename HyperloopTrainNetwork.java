@@ -97,18 +97,18 @@ public class HyperloopTrainNetwork implements Serializable {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String row = reader.readLine();
-            numTrainLines = getIntVar("num_train_lines", row);
+            this.numTrainLines = getIntVar("num_train_lines", row);
             row = reader.readLine();
-            startPoint = new Station(getPointVar("starting_point", row), "Starting Point");
+            this.startPoint = new Station(getPointVar("starting_point", row), "Starting Point");
             row = reader.readLine();
-            destinationPoint = new Station(getPointVar("destination_point", row), "Final Destination");
+            this.destinationPoint = new Station(getPointVar("destination_point", row), "Final Destination");
             row = reader.readLine();
-            averageTrainSpeed = getDoubleVar("average_train_speed", row) * 1000 / 60;
+            this.averageTrainSpeed = getDoubleVar("average_train_speed", row) * 1000 / 60;
             String fileContent = "";
             while ((row = reader.readLine()) != null){
                 fileContent += row + "\n";
             }
-            lines = getTrainLines(fileContent);
+            this.lines = getTrainLines(fileContent);
 
             reader.close();
         }catch(Exception e){
